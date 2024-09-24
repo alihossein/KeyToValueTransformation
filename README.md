@@ -41,6 +41,7 @@ Final Message:
 }
 ```
 - Without Value (Null Value):
+
   Input Record:
 ``` 
 key: "test"
