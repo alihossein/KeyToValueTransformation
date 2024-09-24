@@ -16,3 +16,8 @@ Example:
 "transforms.AddKeyToValue.type": "com.digikala.KeyToValueTransformation",
 "transforms.AddKeyToValue.field.name": "my_custom_key",
 ```
+
+# Build 
+```
+mvn clean install
+```

@@ -4,6 +4,7 @@ import org.apache.kafka.connect.connector.ConnectRecord;
 import org.apache.kafka.connect.transforms.Transformation;
 import org.apache.kafka.connect.transforms.util.Requirements;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class KeyToValueTransformation<R extends ConnectRecord<R>> implements Transformation<R> {
@@ -12,16 +13,22 @@ public class KeyToValueTransformation<R extends ConnectRecord<R>> implements Tra
     public R apply(R record) {
 
         // Verify if the key is a string
-        if (record.key() == null || !(record.key() instanceof String) || record.value() == null) {
+        if (record.key() == null || !(record.key() instanceof String) ) {
             return record;  // return record if
         }
 
         // Get String Key
         String key = (String) record.key();
-        System.out.println(key);
 
-        // modify value to the Hash Map
-        Map<String, Object> valueMap = Requirements.requireMap(record.value(), "value");
+        // Check if the value is null or empty, create a new HashMap if needed
+        Map<String, Object> valueMap;
+
+        if (record.value() == null) {
+            valueMap = new HashMap<>();
+        } else {
+            valueMap = Requirements.requireMap(record.value(), "value");
+        }
+
 
         // add the key into the value with dynamic field name
         valueMap.put(fieldName, key);
