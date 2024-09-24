@@ -1,64 +1,62 @@
 # KeyToValueTransformation
+With this SMT (Single Message Transform), we can add the value of an existing key in Kafka records to the message payload when needed. This allows for flexible use cases where the key itself needs to be included in the record value. It's important to note that the message value must be in JSON format.
 
-With this SMT (Single Message Transform), we can add the value of an existing key in Kafka records when needed. It's important to note that the value must be in JSON format.
-
-Using the following configuration, we can specify the name of the final field:
+# Configuration
+You can specify the name of the final field that will contain the key by using the following configuration:
 
 ```
-"transforms.AddKeyToValue.field.name": "my_custom_key",
+"transforms.AddKeyToValue.field.name": "my_custom_key"
 ```
 
-Example:
-
-
+Example
+Kafka Connect Configuration:
 ```
 "transforms": "AddKeyToValue",
 "transforms.AddKeyToValue.type": "com.digikala.KeyToValueTransformation",
-"transforms.AddKeyToValue.field.name": "my_custom_key",
-```
+"transforms.AddKeyToValue.field.name": "my_custom_key"
 
-# Build 
+```
+This configuration adds the key as a field called my_custom_key in the value.
+
+# Build
+To build the project, run:
 ```
 mvn clean install
 ```
+Example Scenarios
+- With Value:
 
-# Note
-- If the record contains no value and only has a key, the final message will only include the key's value.
-
-# Example 
-record : 
-key :
-test
-
-value :
-```json
-{
+Input Record:
+``` 
+key: "test"
+value: {
     "ping": "pong"
 }
 ```
-
-Final Message :
-```json
+Final Message:
+``` 
 {
     "ping": "pong",
-    "custom_key": "test"
+    "my_custom_key": "test"
 }
-
 ```
+- Without Value (Null Value):
+  Input Record:
+``` 
+key: "test"
+value: null
+```
+Final Message:
 
-------------------------------
-key : test
-
-value : null
-
-Final Message : 
-
-```json
+``` 
 {
-  "custom_key": "test"
+  "my_custom_key": "test"
 }
-
 ```
+This transformation is useful when you need to ensure that the key is part of the message payload, especially for downstream systems that may rely on the key for processing.
+
+
+
 
 
 
