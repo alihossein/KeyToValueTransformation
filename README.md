@@ -21,3 +21,46 @@ Example:
 ```
 mvn clean install
 ```
+
+# Note
+- If the record contains no value and only has a key, the final message will only include the key's value.
+
+# Example 
+record : 
+key :
+test
+
+value :
+```json
+{
+    "ping": "pong"
+}
+```
+
+Final Message :
+```json
+{
+    "ping": "pong",
+    "custom_key": "test"
+}
+
+```
+
+------------------------------
+key : test
+
+value : null
+
+Final Message : 
+
+```json
+{
+  "custom_key": "test"
+}
+
+```
+
+
+
+
+
